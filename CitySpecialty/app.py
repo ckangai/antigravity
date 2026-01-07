@@ -30,6 +30,15 @@ DB_NAME = os.environ.get("DB_NAME")
 EMAIL_USER = os.environ.get("EMAIL_USER", "charles@charleskangai.co.uk")
 EMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD", "").replace(" ", "") # App Password, not main password
 
+# Debug Credentials (Masked)
+logger.info(f"Configured EMAIL_USER: '{EMAIL_USER}'")
+if EMAIL_PASS:
+    logger.info(f"EMAIL_PASS configured. Length: {len(EMAIL_PASS)}")
+    # Log first/last chars to check for accidental quotes
+    logger.info(f"EMAIL_PASS starts with: '{EMAIL_PASS[:1]}', ends with: '{EMAIL_PASS[-1:]}'")
+else:
+    logger.warning("EMAIL_PASS is empty or not set.")
+
 # SQLAlchemy Setup
 Base = declarative_base()
 
