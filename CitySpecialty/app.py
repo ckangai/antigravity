@@ -12,6 +12,11 @@ from google.cloud.sql.connector import Connector, IPTypes
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Configure Logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 app.secret_key = os.environ.get("SECRET_KEY", "dev_key")  # Change for production
 
 # Database Configuration
@@ -99,16 +104,19 @@ def index():
 
         # 2. Send Email
         if EMAIL_PASS:
+            logger.info("Email password configured. Attempting to send emails.")
             try:
                 # Send to Admin
+                logger.info("Sending notification to admin...")
                 send_email("ckangai108@gmail.com", city, specialty, user_email)
                 # Send to User
+                logger.info(f"Sending confirmation to user {user_email}...")
                 send_email(user_email, city, specialty, user_email)
             except Exception as e:
-                logging.error(f"Email error: {e}")
-                flash("Entry saved, but failed to send email.", "warning")
+                logger.error(f"Top-level email error: {e}")
+                flash("Entry saved, but failed to send email. Check server logs for details.", "warning")
         else:
-             logging.warning("Email password not configured. Skipping email.")
+             logger.warning("Email password (GMAIL_APP_PASSWORD) not configured. Skipping email.")
 
         flash(f"Success! {city} added.", "success")
         return redirect(url_for("index"))
@@ -116,19 +124,35 @@ def index():
     return render_template("index.html")
 
 def send_email(to_email, city, specialty, user_email):
-    msg = MIMEMultipart()
-    msg["From"] = EMAIL_USER
-    msg["To"] = to_email
-    msg["Subject"] = "New City Record"
+    try:
+        logger.info(f"Preparing to send email to: {to_email}")
+        msg = MIMEMultipart()
+        msg["From"] = EMAIL_USER
+        msg["To"] = to_email
+        msg["Subject"] = "New City Record"
 
-    body = f"A new record has been added:\n\nCity: {city}\nSpecialty: {specialty}\nSubmitted by: {user_email}"
-    msg.attach(MIMEText(body, "plain"))
+        body = f"A new record has been added:\n\nCity: {city}\nSpecialty: {specialty}\nSubmitted by: {user_email}"
+        msg.attach(MIMEText(body, "plain"))
 
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
-    server.login(EMAIL_USER, EMAIL_PASS)
-    server.send_message(msg)
-    server.quit()
+        logger.info("Connecting to SMTP server (smtp.gmail.com:587)...")
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        
+        logger.info("Starting TLS...")
+        server.starttls()
+        
+        logger.info(f"Logging in as {EMAIL_USER}...")
+        server.login(EMAIL_USER, EMAIL_PASS)
+        
+        logger.info("Sending message...")
+        server.send_message(msg)
+        
+        logger.info("Quitting server...")
+        server.quit()
+        logger.info(f"Email sent successfully to {to_email}")
+        
+    except Exception as e:
+        logger.exception(f"Failed to send email to {to_email}. Error: {e}")
+        raise e  # Re-raise to be caught by the caller if needed
 
 if __name__ == "__main__":
     # Local development

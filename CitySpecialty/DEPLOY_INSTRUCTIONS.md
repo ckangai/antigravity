@@ -43,7 +43,7 @@ We will deploy directly from source, which builds the container automatically.
 
 ```bash
 # Enter the project directory
-cd CitySpecialty
+cd ~/antigravity/CitySpecialty
 ```
 
 ```bash
