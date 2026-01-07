@@ -41,6 +41,12 @@ We will deploy directly from source, which builds the container automatically.
 # Enable necessary APIs
 gcloud services enable run.googleapis.com sqladmin.googleapis.com cloudbuild.googleapis.com
 
+# Grant Cloud Build permissions (Fix for cloudbuild.builds.get error)
+# Replace [YOUR_EMAIL] with your actual email address
+gcloud projects add-iam-policy-binding qwiklabs-gcp-01-d54926c33023 \
+    --member="user:student-03-9b3b82513b2b@qwiklabs.net" \
+    --role="roles/cloudbuild.builds.editor"
+
 # Deploy
 gcloud run deploy city-specialty-service \
     --source . \
