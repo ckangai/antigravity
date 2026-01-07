@@ -55,6 +55,7 @@ gcloud run deploy city-specialty-service \
     --allow-unauthenticated \
     --set-env-vars INSTANCE_CONNECTION_NAME=qwiklabs-gcp-01-d54926c33023:us-central1:city-specialty-db-instance \
     --set-env-vars DB_USER=root \
+    --project qwiklabs-gcp-01-d54926c33023 \
     --set-env-vars 'DB_PASS=Summit$2026' \
     --set-env-vars DB_NAME=city_specialty_db \
     --set-env-vars "GMAIL_APP_PASSWORD=mohw pjcn ybvq nmav" \
