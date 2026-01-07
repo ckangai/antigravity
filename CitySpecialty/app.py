@@ -117,7 +117,7 @@ def index():
             try:
                 # Send to Admin
                 logger.info("Sending notification to admin...")
-                send_email("ckangai108@gmail.com", city, specialty, user_email)
+                send_email("charles@charleskangai.co.uk", city, specialty, user_email)
                 # Send to User
                 logger.info(f"Sending confirmation to user {user_email}...")
                 send_email(user_email, city, specialty, user_email)
