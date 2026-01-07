@@ -51,7 +51,7 @@ gcloud run deploy city-specialty-service \
     --set-env-vars DB_USER=root \
     --set-env-vars DB_PASS=Summit$2026 \
     --set-env-vars DB_NAME=city_specialty_db \
-    --set-env-vars GMAIL_APP_PASSWORD=mohw pjcn ybvq nmav\
+    --set-env-vars "GMAIL_APP_PASSWORD=mohw pjcn ybvq nmav" \
     --set-env-vars SECRET_KEY=af11ba9019ea882bc447e292c1834521a8aa72dbcadd64e55021e26d59586858
 ```
 
