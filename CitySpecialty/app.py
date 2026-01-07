@@ -22,8 +22,8 @@ DB_PASS = os.environ.get("DB_PASS")
 DB_NAME = os.environ.get("DB_NAME")
 
 # Email Configuration
-EMAIL_USER = "charles@charleskangai.co.uk"
-EMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD") # App Password, not main password
+EMAIL_USER = os.environ.get("EMAIL_USER", "charles@charleskangai.co.uk")
+EMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD", "").replace(" ", "") # App Password, not main password
 
 # SQLAlchemy Setup
 Base = declarative_base()
