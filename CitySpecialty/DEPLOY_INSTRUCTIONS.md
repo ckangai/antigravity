@@ -39,7 +39,7 @@ We will deploy directly from source, which builds the container automatically.
 
 ```bash
 # Enable necessary APIs
-gcloud services enable run.googleapis.com sqladmin.googleapis.com
+gcloud services enable run.googleapis.com sqladmin.googleapis.com cloudbuild.googleapis.com
 
 # Deploy
 gcloud run deploy city-specialty-service \
