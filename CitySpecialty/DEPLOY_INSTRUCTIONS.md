@@ -37,6 +37,15 @@ gcloud sql connect city-specialty-db-instance --user=root --quiet < db_init.sql
 
 We will deploy directly from source, which builds the container automatically.
 
+> [!CAUTION]
+> **Check your directory!**
+> You must run these commands from inside the `CitySpecialty` folder. If you are in the parent folder, the build will fail with confusing permission errors.
+
+```bash
+# Enter the project directory
+cd CitySpecialty
+```
+
 ```bash
 # Enable necessary APIs
 gcloud services enable run.googleapis.com sqladmin.googleapis.com cloudbuild.googleapis.com
@@ -59,7 +68,7 @@ gcloud run deploy city-specialty-service \
     --set-env-vars 'DB_PASS=Summit$2026' \
     --set-env-vars DB_NAME=city_specialty_db \
     --set-env-vars "GMAIL_APP_PASSWORD=mohw pjcn ybvq nmav" \
-    --set-env-vars EMAIL_USER=ckangai108@gmail.com \
+    --set-env-vars EMAIL_USER=charles@charleskangai.co.uk \
     --set-env-vars SECRET_KEY=af11ba9019ea882bc447e292c1834521a8aa72dbcadd64e55021e26d59586858
 ```
 
