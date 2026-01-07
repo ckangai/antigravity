@@ -10,7 +10,7 @@
 
 ```bash
 # Set your project ID
-gcloud config set project [YOUR_PROJECT_ID]
+gcloud config set project qwiklabs-gcp-01-d54926c33023
 
 # Create a Cloud SQL instance (MySQL)
 gcloud sql instances create city-specialty-db-instance \
@@ -18,7 +18,7 @@ gcloud sql instances create city-specialty-db-instance \
     --cpu=1 \
     --memory=4GB \
     --region=us-central1 \
-    --root-password=[YOUR_DB_PASSWORD] # Remember this!
+    --root-password=Summit$2026 # Remember this!
 
 # Create the database
 gcloud sql databases create city_specialty_db --instance=city-specialty-db-instance
@@ -47,12 +47,12 @@ gcloud run deploy city-specialty-service \
     --platform managed \
     --region us-central1 \
     --allow-unauthenticated \
-    --set-env-vars INSTANCE_CONNECTION_NAME=[YOUR_PROJECT_ID]:us-central1:city-specialty-db-instance \
+    --set-env-vars INSTANCE_CONNECTION_NAME=qwiklabs-gcp-01-d54926c33023:us-central1:city-specialty-db-instance \
     --set-env-vars DB_USER=root \
-    --set-env-vars DB_PASS=[YOUR_DB_PASSWORD] \
+    --set-env-vars DB_PASS=Summit$2026 \
     --set-env-vars DB_NAME=city_specialty_db \
-    --set-env-vars GMAIL_APP_PASSWORD=[YOUR_GMAIL_APP_PASSWORD] \
-    --set-env-vars SECRET_KEY=[RANDOM_SECRET_KEY]
+    --set-env-vars GMAIL_APP_PASSWORD=mohw pjcn ybvq nmav\
+    --set-env-vars SECRET_KEY=af11ba9019ea882bc447e292c1834521a8aa72dbcadd64e55021e26d59586858
 ```
 
 **Note**: Replace all `[PLACEHOLDERS]` with your actual values.
