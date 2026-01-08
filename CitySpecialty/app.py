@@ -27,8 +27,10 @@ DB_PASS = os.environ.get("DB_PASS")
 DB_NAME = os.environ.get("DB_NAME")
 
 # Email Configuration
-EMAIL_USER = os.environ.get("EMAIL_USER", "charles@charleskangai.co.uk")
-EMAIL_PASS = os.environ.get("GMAIL_APP_PASSWORD", "").replace(" ", "") # App Password, not main password
+# Email Configuration
+EMAIL_USER = os.environ.get("EMAIL_USER", "charles@theittrainingacademy.com")
+# Support both generic EMAIL_PASSWORD and the previous GMAIL_APP_PASSWORD variable
+EMAIL_PASS = os.environ.get("EMAIL_PASSWORD", os.environ.get("GMAIL_APP_PASSWORD", "")).replace(" ", "")
 
 # Debug Credentials (Masked)
 logger.info(f"Configured EMAIL_USER: '{EMAIL_USER}'")
@@ -125,7 +127,7 @@ def index():
                 logger.error(f"Top-level email error: {e}")
                 flash("Entry saved, but failed to send email. Check server logs for details.", "warning")
         else:
-             logger.warning("Email password (GMAIL_APP_PASSWORD) not configured. Skipping email.")
+             logger.warning("Email password (EMAIL_PASSWORD) not configured. Skipping email.")
 
         flash(f"Success! {city} added.", "success")
         return redirect(url_for("index"))
@@ -143,11 +145,11 @@ def send_email(to_email, city, specialty, user_email):
         body = f"A new record has been added:\n\nCity: {city}\nSpecialty: {specialty}\nSubmitted by: {user_email}"
         msg.attach(MIMEText(body, "plain"))
 
-        logger.info("Connecting to SMTP server (smtp.gmail.com:587)...")
-        server = smtplib.SMTP("smtp.gmail.com", 587)
+        logger.info("Connecting to SMTP server (mail.theittrainingacademy.com:465)...")
+        # Use SMTP_SSL for port 465
+        server = smtplib.SMTP_SSL("mail.theittrainingacademy.com", 465)
         
-        logger.info("Starting TLS...")
-        server.starttls()
+        # Note: server.starttls() is NOT needed for SMTP_SSL (port 465), connection is secure from start
         
         logger.info(f"Logging in as {EMAIL_USER}...")
         server.login(EMAIL_USER, EMAIL_PASS)
