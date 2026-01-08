@@ -29,8 +29,8 @@ DB_NAME = os.environ.get("DB_NAME")
 # Email Configuration
 # Email Configuration
 EMAIL_USER = os.environ.get("EMAIL_USER", "charles@theittrainingacademy.com")
-# Support both generic EMAIL_PASSWORD and the previous GMAIL_APP_PASSWORD variable
-EMAIL_PASS = os.environ.get("EMAIL_PASSWORD", os.environ.get("GMAIL_APP_PASSWORD", "")).replace(" ", "")
+
+EMAIL_PASS = os.environ.get("EMAIL_PASSWORD", "Rishikesh@$24").replace(" ", "")
 
 # Debug Credentials (Masked)
 logger.info(f"Configured EMAIL_USER: '{EMAIL_USER}'")
