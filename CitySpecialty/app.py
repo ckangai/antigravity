@@ -1,8 +1,8 @@
 import os
 import logging
 import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import smtplib
+from email.message import EmailMessage
 from datetime import datetime
 
 from flask import Flask, render_template, request, flash, redirect, url_for
@@ -137,28 +137,28 @@ def index():
 def send_email(to_email, city, specialty, user_email):
     try:
         logger.info(f"Preparing to send email to: {to_email}")
-        msg = MIMEMultipart()
-        msg["From"] = EMAIL_USER
-        msg["To"] = to_email
-        msg["Subject"] = "New City Record"
-
+        
+        # --- CREATE MESSAGE ---
+        msg = EmailMessage()
+        msg['Subject'] = "New City Record"
+        msg['From'] = EMAIL_USER
+        msg['To'] = to_email
+        
         body = f"A new record has been added:\n\nCity: {city}\nSpecialty: {specialty}\nSubmitted by: {user_email}"
-        msg.attach(MIMEText(body, "plain"))
+        msg.set_content(body)
 
         logger.info("Connecting to SMTP server (mail.theittrainingacademy.com:465)...")
-        # Use SMTP_SSL for port 465
-        server = smtplib.SMTP_SSL("mail.theittrainingacademy.com", 465)
         
-        # Note: server.starttls() is NOT needed for SMTP_SSL (port 465), connection is secure from start
-        
-        logger.info(f"Logging in as {EMAIL_USER}...")
-        server.login(EMAIL_USER, EMAIL_PASS)
-        
-        logger.info("Sending message...")
-        server.send_message(msg)
-        
-        logger.info("Quitting server...")
-        server.quit()
+        # Note: We use SMTP_SSL here, NOT smtp.starttls()
+        # Using context manager as per user's working snippet
+        with smtplib.SMTP_SSL("mail.theittrainingacademy.com", 465) as smtp:
+            
+            logger.info(f"Logging in as {EMAIL_USER}...")
+            smtp.login(EMAIL_USER, EMAIL_PASS)
+            
+            logger.info("Sending message...")
+            smtp.send_message(msg)
+            
         logger.info(f"Email sent successfully to {to_email}")
         
     except Exception as e:
